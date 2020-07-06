@@ -1,0 +1,62 @@
+syntax = "proto3";
+package gRPCDemo;
+
+option go_package = ".;grpcdemopb";
+
+message Numbers {
+  int32 startingValue = 1;
+  int32 endingValue   = 2;
+}
+
+message CalculationUnaryRequest {
+  Numbers number = 1;
+}
+
+message CalculationUnaryResponse {
+  int32 result = 1;
+}
+
+message ServerStreamCalculationRequest {
+  Numbers number = 1;
+}
+
+message ServerStreamCalculationResponse {
+  int32 result = 1;
+}
+
+message ClientStreamCalculationRequest {
+  int32 number = 1;
+}
+
+message ClientStreamCalculationResponse {
+  int32 result = 1;
+}
+
+
+message BiDirectionalStreamCalculationRequest {
+  int32 number = 1;
+}
+
+message BiDirectionalStreamCalculationResponse {
+  int32 result = 1;
+}
+
+
+service additionService  {
+  //Unary API Example
+  //This is the most common API we use in everyday life.
+  //The client sends a request for server performs the required action and thr server then sends a response.
+  rpc unaryCalculation(CalculationUnaryRequest) returns (CalculationUnaryResponse) {};
+  //Server Streaming
+  //In Server streaming we send some data to the server and server sends the processed data back to us
+  //in stream. The client does not have to wait for server to send the data after complete action.
+  rpc serverStreamingCalculation(ServerStreamCalculationRequest) returns (stream ServerStreamCalculationResponse) {}
+  //Client Streaming
+  //In Client streaming the client sends the information to server in stream. This is useful when we have to send large
+  //data to server. By sending data in stream we can ignore multiple calls to the server.
+  rpc clientStreamingCalculation(stream ClientStreamCalculationRequest) returns (ClientStreamCalculationResponse) {}
+  //Bi-Directional Streaming
+  //In this streaming methods we can send data to server in streams and receive response from server in streams.
+  //This is usefull in getting real-time values based on inputs.
+  rpc biDirectionalStreamingCalculation(stream BiDirectionalStreamCalculationRequest) returns (stream BiDirectionalStreamCalculationResponse) {}
+}
