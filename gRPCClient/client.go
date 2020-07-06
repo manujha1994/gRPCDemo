@@ -13,9 +13,11 @@ import (
 	"time"
 )
 
+// Initializing a wait group to track our go routines
 var wg = sync.WaitGroup{}
 
 func sendData(stream grpcdemopb.AdditionService_BiDirectionalStreamingCalculationClient) {
+	//Creating a slice which will be sent in stream
 	numberSlice := make([] *grpcdemopb.BiDirectionalStreamCalculationRequest,0)
 	for i:= int32(1); i<=25; i++ {
 		numberSlice = append(numberSlice,&grpcdemopb.BiDirectionalStreamCalculationRequest{
